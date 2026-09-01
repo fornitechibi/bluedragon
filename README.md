@@ -2,7 +2,7 @@
 
 Personal site for **Shibi Kishore N** (Bluedragon) — independent security researcher, ex-Cantina triager.
 
-Static Astro site. Built for the **Cloudflare Pages free tier** (no Functions, no SSR).
+Static Astro site. Deployed with **Cloudflare Workers Builds** (Git integration). The site is fully pre-rendered; there is no Worker script.
 
 ## Local
 
@@ -20,38 +20,43 @@ npm run preview
 
 Edit copy, stats, and languages in `src/data/profile.ts`. Portrait source is `assets/Bluedragon-main.png` (served as `public/bluedragon.jpg`).
 
-## Deploy on Cloudflare Pages (free)
+## Deploy on Cloudflare (Workers Builds)
 
-The repo is on GitHub. Connect it to Pages and every push to `main` deploys.
+This repo is connected through **Workers & Pages → Worker → Settings → Builds**. That flow always has two commands. Classic Pages (build + output directory only) is different.
 
-1. Open [Cloudflare Dashboard](https://dash.cloudflare.com) and sign in (free account is enough).
-2. Go to **Workers & Pages** → **Create** → **Pages** → **Connect to Git**.
-3. Authorize GitHub if asked, then select **`fornitechibi/bluedragon`**.
-4. Use these build settings:
+### Dashboard settings
 
-   | Setting | Value |
-   | --- | --- |
-   | Framework preset | Astro |
-   | Production branch | `main` |
-   | Build command | `npm run build` |
-   | Build output directory | `dist` |
-   | Root directory | `/` (leave default) |
+| Setting | Value |
+| --- | --- |
+| Production branch | `main` |
+| **Build command** | `npm run build` |
+| **Deploy command** | `npx wrangler deploy` |
+| Non-production deploy command | `npx wrangler versions upload` (default) |
+| Root directory | `/` |
+| Node | `22` (`NODE_VERSION=22`) |
 
-5. Under **Environment variables** (Production and Preview), add:
+Do **not** use `npx wrangler pages deploy`. That talks to the Pages API. Workers Builds authenticates as a Worker, so Pages deploy returns `Authentication error [code: 10000]`.
 
-   | Name | Value |
-   | --- | --- |
-   | `NODE_VERSION` | `22` |
-   | `PUBLIC_SITE_URL` | `https://<project>.pages.dev` (update after the first deploy, or when you attach a domain) |
+Wrangler reads `wrangler.toml`:
 
-6. Click **Save and Deploy**. The first live URL is `https://<project-name>.pages.dev`.
+```toml
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"
+```
 
-After the first deploy, set `PUBLIC_SITE_URL` to that exact URL (or your custom domain) and redeploy so sitemap, canonical, and Open Graph tags match the live host. You can also set `site` in `astro.config.mjs`.
+After `npm run build`, `npx wrangler deploy` uploads `dist/`. No extra `--project-name` flag is needed.
 
-### Custom domain (still free)
+### After the first successful deploy
 
-1. In the Pages project: **Custom domains** → **Set up a custom domain**.
-2. If the domain is already on Cloudflare, it attaches automatically. If not, add a CNAME to the Pages host (Cloudflare shows the target).
-3. Update `PUBLIC_SITE_URL` to `https://yourdomain` and redeploy.
+The live URL is `https://bluedragon.<subdomain>.workers.dev` (or a custom domain you attach). Set:
 
-Pages free includes unlimited static requests, a custom domain, and SSL. Avoid Pages Functions if you want to stay fully on the free static quota.
+```
+PUBLIC_SITE_URL=https://that-live-url
+```
+
+Then redeploy so sitemap, canonical, and Open Graph tags match.
+
+### Custom domain
+
+Worker → **Settings** → **Domains & Routes** → add the domain. Then point `PUBLIC_SITE_URL` at `https://yourdomain` and redeploy.

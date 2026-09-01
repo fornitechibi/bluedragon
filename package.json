@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "deploy": "wrangler deploy"
   },
   "engines": {
     "node": ">=20"
@@ -20,5 +21,8 @@
     "astro": "^7.2.9",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
+  },
+  "devDependencies": {
+    "wrangler": "^4.127.1"
   }
 }
