@@ -1,0 +1,45 @@
+---
+import { profile, stats } from '../data/profile';
+
+const tiles = [
+  { label: 'Security findings', value: profile.findings, note: 'Validated across contests and OSS' },
+  { label: 'Reports triaged', value: profile.triaged, note: 'Ex-Cantina triager' },
+  { label: 'nSLOC reviewed', value: profile.nsloc, note: 'EVM, DLT, OSS' },
+  { label: 'Years researching', value: profile.years, note: 'Audits and bug bounty' },
+];
+---
+
+<section class="mx-auto max-w-6xl px-4 pb-6 sm:px-6" aria-label="Headline stats">
+  <div class="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
+    {
+      tiles.map((tile) => (
+        <article class="stat-tile">
+          <p class="text-xs font-medium text-cyan">{tile.label}</p>
+          <p class="stat-value mt-2">{tile.value}</p>
+          <p class="mt-2 text-xs text-mute">{tile.note}</p>
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="mt-4 grid gap-3 md:grid-cols-2">
+    <a class="neo flex items-center justify-between gap-4 p-4 no-underline transition hover:-translate-x-0.5 hover:-translate-y-0.5" href="https://audits.sherlock.xyz/watson/Bluedragon">
+      <div>
+        <p class="text-xs font-medium text-cyan">Sherlock</p>
+        <p class="mt-1 text-xl font-semibold tracking-tight">All-time #{stats.sherlockRank}</p>
+        <p class="mt-1 text-xs text-mute">
+          {stats.top10}× top 10 · {stats.top25}× top 25 · {stats.payouts} contests
+        </p>
+      </div>
+      <span class="text-sm font-medium text-cyan">Open ↗</span>
+    </a>
+    <a class="neo flex items-center justify-between gap-4 p-4 no-underline transition hover:-translate-x-0.5 hover:-translate-y-0.5" href="https://immunefi.com/profile/Bluedragon/">
+      <div>
+        <p class="text-xs font-medium text-cyan">Immunefi</p>
+        <p class="mt-1 text-xl font-semibold tracking-tight">All-time #{stats.immunefiRank}</p>
+        <p class="mt-1 text-xs text-mute">High Five · contests and live programs</p>
+      </div>
+      <span class="text-sm font-medium text-cyan">Open ↗</span>
+    </a>
+  </div>
+</section>

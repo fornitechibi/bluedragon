@@ -1,0 +1,49 @@
+---
+import { profile } from '../data/profile';
+
+const chips = [
+  { label: 'X', href: profile.links.x },
+  { label: 'GitHub', href: profile.links.github },
+  { label: 'Sherlock', href: profile.links.sherlock },
+  { label: 'Immunefi', href: profile.links.immunefi },
+  { label: 'Reports', href: profile.links.reports },
+];
+---
+
+<section id="contact" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+  <p class="section-kicker">Contact</p>
+  <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-5xl">
+    Audits, triage, and AI systems
+  </h2>
+  <p class="mt-4 max-w-xl text-lg text-cream/85">
+    Independent. Remote. I take private security reviews, contest work, and production AI harness / agentic-system builds.
+  </p>
+
+  <div class="neo mt-8 p-5 sm:p-8">
+    <p class="text-xs font-medium text-cyan">Email</p>
+    <a class="email-display mt-2 block text-cream no-underline hover:text-cyan" href={`mailto:${profile.email}`}>
+      {profile.email}
+    </a>
+    <div class="mt-6 flex flex-wrap gap-3">
+      <a class="neo-btn" href={`mailto:${profile.email}`}>Write</a>
+      <button class="neo-btn neo-btn-ghost" type="button" data-copy={profile.email}>Copy email</button>
+    </div>
+  </div>
+
+  <div class="mt-6 flex flex-wrap gap-3">
+    {
+      chips.map((chip) => (
+        <a class="neo-btn neo-btn-ghost" href={chip.href}>
+          {chip.label}
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<footer class="border-t-[3px] border-cream">
+  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-mute sm:px-6">
+    <p>© {new Date().getFullYear()} {profile.name} · {profile.handle}</p>
+    <p>Cloudflare Pages · Independent security researcher</p>
+  </div>
+</footer>

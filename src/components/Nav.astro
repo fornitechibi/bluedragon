@@ -1,0 +1,25 @@
+---
+import { profile } from '../data/profile';
+---
+
+<header class="site-header">
+  <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+    <a href="#top" class="flex items-center gap-3 no-underline">
+      <img
+        src="/bluedragon.jpg"
+        alt=""
+        width="40"
+        height="40"
+        class="h-10 w-10 border-[3px] border-cream object-cover"
+      />
+      <span class="text-base font-semibold tracking-tight sm:text-lg">
+        {profile.handle}
+      </span>
+    </a>
+    <nav class="flex items-center gap-5 text-sm font-medium sm:gap-6">
+      <a class="hover:text-cyan" href="#scope">Experience</a>
+      <a class="hover:text-cyan" href="#targets">Work</a>
+      <a class="hover:text-cyan" href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>

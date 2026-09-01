@@ -1,0 +1,48 @@
+---
+import { profile, orgs } from '../data/profile';
+
+const rowA = orgs.slice(0, 5);
+const rowB = orgs.slice(5);
+const trackA = [...rowA, ...rowA, ...rowA];
+const trackB = [...rowB, ...rowB, ...rowB];
+---
+
+<section id="targets" class="mx-auto max-w-6xl px-4 py-12 sm:px-6" aria-label="Organizations with validated findings">
+  <div class="max-w-2xl">
+    <p class="section-kicker">Selected targets</p>
+    <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Found bugs in</h2>
+    <p class="mt-3 text-[0.95rem] leading-relaxed text-mute">
+      {profile.findings} validated security findings across these organizations. Full reports are on
+      <a class="font-medium text-cyan no-underline hover:underline" href={profile.links.sherlock}>Sherlock</a>
+      and
+      <a class="font-medium text-cyan no-underline hover:underline" href={profile.links.immunefi}>Immunefi</a>.
+    </p>
+  </div>
+
+  <div class="logo-frame mt-8">
+    <div class="logo-lane">
+      <div class="logo-track">
+        {
+          trackA.map((org) => (
+            <div class="logo-chip">
+              <img src={org.logo} alt="" width="22" height="22" />
+              <span>{org.name}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <div class="logo-lane">
+      <div class="logo-track logo-track-reverse">
+        {
+          trackB.map((org) => (
+            <div class="logo-chip">
+              <img src={org.logo} alt="" width="22" height="22" />
+              <span>{org.name}</span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

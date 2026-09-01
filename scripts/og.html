@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; background: #07090f; }
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        color: #f3ede0;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 48px;
+        padding: 56px 60px;
+        align-items: center;
+      }
+      .kicker {
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 18px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #3ee0ff;
+        margin-bottom: 18px;
+      }
+      .name {
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 18px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: #8a93a8;
+      }
+      h1 {
+        font-size: 92px;
+        line-height: 0.82;
+        letter-spacing: -0.05em;
+        text-transform: uppercase;
+        font-weight: 800;
+        margin: 8px 0 22px;
+      }
+      p.lead {
+        font-size: 22px;
+        line-height: 1.35;
+        max-width: 520px;
+        color: #f3ede0;
+      }
+      .stats {
+        display: flex;
+        gap: 10px;
+        margin-top: 28px;
+      }
+      .chip {
+        border: 3px solid #f3ede0;
+        padding: 8px 12px;
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        box-shadow: 4px 4px 0 0 #3ee0ff;
+      }
+      .frame {
+        width: 430px;
+        border: 6px solid #f3ede0;
+        box-shadow: 14px 14px 0 0 #3ee0ff;
+        background: #efe6d4;
+        position: relative;
+      }
+      .frame img { display: block; width: 100%; height: auto; }
+      .seal {
+        position: absolute;
+        top: -16px;
+        left: -16px;
+        background: #d4f542;
+        color: #07090f;
+        border: 3px solid #f3ede0;
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        padding: 6px 10px;
+        box-shadow: 4px 4px 0 0 #f3ede0;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div class="kicker">Independent security researcher</div>
+      <div class="name">Shibi Kishore N</div>
+      <h1>Bluedragon</h1>
+      <p class="lead">EVM · DLT internals · OSS. 27 High / 30 Medium. 100k+ nSLOC.</p>
+      <div class="stats">
+        <div class="chip">Ex-Cantina triager</div>
+        <div class="chip">7× Top 10</div>
+      </div>
+    </div>
+    <div class="frame">
+      <div class="seal">Open for audits</div>
+      <img src="../public/bluedragon.jpg" alt="Bluedragon" />
+    </div>
+  </body>
+</html>
