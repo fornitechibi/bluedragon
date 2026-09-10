@@ -1,10 +1,14 @@
 ---
 import { profile } from '../data/profile';
+
+const path = Astro.url.pathname;
+const isHome = path === '/' || path === '';
+const onFindings = path.startsWith('/findings');
 ---
 
 <header class="site-header">
   <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-    <a href="#top" class="flex items-center gap-3 no-underline">
+    <a href="/" class="flex items-center gap-3 no-underline">
       <img
         src="/bluedragon.jpg"
         alt=""
@@ -16,10 +20,11 @@ import { profile } from '../data/profile';
         {profile.handle}
       </span>
     </a>
-    <nav class="flex items-center gap-5 text-sm font-medium sm:gap-6">
-      <a class="hover:text-cyan" href="#scope">Experience</a>
-      <a class="hover:text-cyan" href="#targets">Work</a>
-      <a class="hover:text-cyan" href="#contact">Contact</a>
+    <nav class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium sm:gap-6">
+      <a class="hover:text-cyan" href={isHome ? '#scope' : '/#scope'}>Experience</a>
+      <a class:list={['hover:text-cyan', onFindings && 'text-cyan']} href="/findings">Findings</a>
+      <a class="hover:text-cyan" href={isHome ? '#targets' : '/#targets'}>Work</a>
+      <a class="hover:text-cyan" href={isHome ? '#contact' : '/#contact'}>Contact</a>
     </nav>
   </div>
 </header>

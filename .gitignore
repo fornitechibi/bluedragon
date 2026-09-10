@@ -5,3 +5,7 @@ dist/
 .env.*
 .DS_Store
 .wrangler/
+
+# Raw research notes with PoCs. Public writeups live in src/content/findings/.
+findings/**
+!findings/README.md

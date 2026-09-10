@@ -1,8 +1,8 @@
 ---
 import { profile, orgs } from '../data/profile';
 
-const rowA = orgs.slice(0, 5);
-const rowB = orgs.slice(5);
+const rowA = orgs.slice(0, 6);
+const rowB = orgs.slice(6);
 const trackA = [...rowA, ...rowA, ...rowA];
 const trackB = [...rowB, ...rowB, ...rowB];
 ---
@@ -12,7 +12,9 @@ const trackB = [...rowB, ...rowB, ...rowB];
     <p class="section-kicker">Selected targets</p>
     <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Found bugs in</h2>
     <p class="mt-3 text-[0.95rem] leading-relaxed text-mute">
-      {profile.findings} validated security findings across these organizations. Full reports are on
+      {profile.findings} validated security findings across these organizations. Long-form OSS writeups are in
+      <a class="font-medium text-cyan no-underline hover:underline" href="/findings">Findings</a>.
+      Contest records are on
       <a class="font-medium text-cyan no-underline hover:underline" href={profile.links.sherlock}>Sherlock</a>
       and
       <a class="font-medium text-cyan no-underline hover:underline" href={profile.links.immunefi}>Immunefi</a>.
@@ -25,7 +27,7 @@ const trackB = [...rowB, ...rowB, ...rowB];
         {
           trackA.map((org) => (
             <div class="logo-chip">
-              <img src={org.logo} alt="" width="22" height="22" />
+              <img src={org.logo} alt="" width="28" height="28" />
               <span>{org.name}</span>
             </div>
           ))
@@ -37,7 +39,7 @@ const trackB = [...rowB, ...rowB, ...rowB];
         {
           trackB.map((org) => (
             <div class="logo-chip">
-              <img src={org.logo} alt="" width="22" height="22" />
+              <img src={org.logo} alt="" width="28" height="28" />
               <span>{org.name}</span>
             </div>
           ))

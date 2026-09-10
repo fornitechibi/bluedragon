@@ -13,12 +13,12 @@ import { profile } from '../data/profile';
       {profile.summary}
     </p>
     <p class="mt-4 max-w-xl text-base text-mute">
-      {profile.findings} validated security findings. Full reports on Sherlock and Immunefi.
+      {profile.findings} validated security findings. Public writeups on this site; contest records on Sherlock and Immunefi.
     </p>
     <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-      <a class="neo-btn" href={profile.links.sherlock}>Sherlock profile</a>
+      <a class="neo-btn" href="/findings">Read findings</a>
+      <a class="neo-btn neo-btn-ghost" href={profile.links.sherlock}>Sherlock profile</a>
       <a class="neo-btn neo-btn-ghost" href={profile.links.immunefi}>Immunefi profile</a>
-      <a class="neo-btn neo-btn-ghost" href={`mailto:${profile.email}`}>Email</a>
     </div>
   </div>
 

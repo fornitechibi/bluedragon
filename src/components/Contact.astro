@@ -1,5 +1,6 @@
 ---
 import { profile } from '../data/profile';
+import Footer from './Footer.astro';
 
 const chips = [
   { label: 'X', href: profile.links.x },
@@ -41,9 +42,4 @@ const chips = [
   </div>
 </section>
 
-<footer class="border-t-[3px] border-cream">
-  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-mute sm:px-6">
-    <p>© {new Date().getFullYear()} {profile.name} · {profile.handle}</p>
-    <p>Cloudflare Pages · Independent security researcher</p>
-  </div>
-</footer>
+<Footer />

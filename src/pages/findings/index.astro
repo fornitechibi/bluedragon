@@ -1,0 +1,112 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import FindingCard from '../../components/FindingCard.astro';
+import { profile } from '../../data/profile';
+import { seriesMeta, seriesOrder, severityRank } from '../../data/findings';
+
+const entries = await getCollection('findings');
+const bySeries = Object.fromEntries(
+  seriesOrder.map((id) => [id, entries.filter((entry) => entry.data.series === id)]),
+) as Record<(typeof seriesOrder)[number], typeof entries>;
+
+const criticals = entries.filter((entry) => entry.data.severity === 'Critical').length;
+const highs = entries.filter((entry) => entry.data.severity === 'High').length;
+const mediums = entries.filter((entry) => entry.data.severity === 'Medium').length;
+---
+
+<Base
+  title={`Findings — ${profile.handle}`}
+  description={`Public security writeups by ${profile.name}. ${entries.length} reports so far, including Microsoft MsQuic and Obyte. Architecture diagrams, attack paths, and fixes — not bounty tables.`}
+>
+  <Nav />
+  <main id="main" class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+    <p class="section-kicker">Dossier</p>
+    <h1 class="mt-2 max-w-3xl text-4xl font-semibold tracking-tight sm:text-5xl">Findings</h1>
+    <p class="mt-4 max-w-2xl text-lg leading-relaxed text-cream/85">
+      Public reports from independent research. Each writeup is a readable technical note: the bug, the software path, a diagram of the failure, impact, and the fix. Full contest records stay on
+      <a class="font-medium text-cyan no-underline hover:underline" href={profile.links.sherlock}>Sherlock</a>
+      and
+      <a class="font-medium text-cyan no-underline hover:underline" href={profile.links.immunefi}>Immunefi</a>.
+    </p>
+
+    <div class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+      <div class="stat-tile">
+        <p class="text-xs font-medium text-cyan">Published here</p>
+        <p class="stat-value mt-2">{entries.length}</p>
+      </div>
+      <div class="stat-tile">
+        <p class="text-xs font-medium text-cyan">Critical</p>
+        <p class="stat-value mt-2">{criticals}</p>
+      </div>
+      <div class="stat-tile">
+        <p class="text-xs font-medium text-cyan">High</p>
+        <p class="stat-value mt-2">{highs}</p>
+      </div>
+      <div class="stat-tile">
+        <p class="text-xs font-medium text-cyan">Medium</p>
+        <p class="stat-value mt-2">{mediums}</p>
+      </div>
+    </div>
+
+    {
+      seriesOrder.map((id) => {
+        const meta = seriesMeta[id];
+        const posts = bySeries[id] ?? [];
+        const sorted = [...posts].sort((a, b) => {
+          const bySev = severityRank[a.data.severity] - severityRank[b.data.severity];
+          if (bySev !== 0) return bySev;
+          return a.data.title.localeCompare(b.data.title);
+        });
+        return (
+          <section class="mt-14" id={id} aria-labelledby={`${id}-heading`}>
+            <div class="flex flex-wrap items-start gap-4 border-b-[3px] border-cream pb-4">
+              {
+                meta.logo ? (
+                  <img src={meta.logo} alt="" width="36" height="36" class="mt-1 h-9 w-9 object-contain" />
+                ) : null
+              }
+              <div class="min-w-0 flex-1">
+                <p class="section-kicker">{meta.label}</p>
+                <h2 id={`${id}-heading`} class="mt-1 text-2xl font-semibold tracking-tight sm:text-3xl">
+                  {meta.product}
+                </h2>
+                <p class="mt-2 max-w-2xl text-sm leading-relaxed text-mute">{meta.blurb}</p>
+              </div>
+              <p class="font-mono text-sm text-mute">{sorted.length} report{sorted.length === 1 ? '' : 's'}</p>
+            </div>
+
+            {
+              sorted.length > 0 ? (
+                <div class="mt-6 grid gap-4 md:grid-cols-2">
+                  {sorted.map((entry) => (
+                    <FindingCard
+                      id={entry.id}
+                      title={entry.data.title}
+                      lede={entry.data.lede}
+                      severity={entry.data.severity}
+                      series={entry.data.series}
+                      product={entry.data.product}
+                      reach={entry.data.reach}
+                      component={entry.data.component}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <div class="neo mt-6 p-5">
+                  <p class="text-sm font-semibold text-cyan">Writeups in progress</p>
+                  <p class="mt-2 text-sm leading-relaxed text-mute">
+                    This series is reserved. Reports will appear here using the same report format — diagrams, attack path, impact, fix — once they are cleared to publish.
+                  </p>
+                </div>
+              )
+            }
+          </section>
+        );
+      })
+    }
+  </main>
+  <Footer />
+</Base>

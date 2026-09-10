@@ -1,0 +1,130 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Nav from '../../../components/Nav.astro';
+import Footer from '../../../components/Footer.astro';
+import { profile } from '../../../data/profile';
+import { findingHref, seriesMeta, severityClass, severityRank, type SeriesId } from '../../../data/findings';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('findings');
+  return entries.map((entry) => {
+    const parts = entry.id.split('/');
+    const series = parts[0];
+    const slug = parts.slice(1).join('/') || parts[0];
+    return {
+      params: { series, slug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+const data = entry.data;
+const series = data.series as SeriesId;
+const meta = seriesMeta[series];
+const siblings = (await getCollection('findings'))
+  .filter((item) => item.data.series === series)
+  .sort((a, b) => {
+    const bySev = severityRank[a.data.severity] - severityRank[b.data.severity];
+    if (bySev !== 0) return bySev;
+    return a.data.title.localeCompare(b.data.title);
+  });
+const index = siblings.findIndex((item) => item.id === entry.id);
+const prev = index > 0 ? siblings[index - 1] : undefined;
+const next = index >= 0 && index < siblings.length - 1 ? siblings[index + 1] : undefined;
+const commitShort = data.commit ? data.commit.slice(0, 12) : undefined;
+---
+
+<Base
+  title={`${data.title} — ${profile.handle}`}
+  description={data.lede}
+>
+  <Nav />
+  <main id="main" class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+    <p class="text-sm text-mute">
+      <a class="text-cyan no-underline hover:underline" href="/findings">Findings</a>
+      <span class="text-cream/30"> / </span>
+      <a class="text-cyan no-underline hover:underline" href={`/findings#${series}`}>{meta.product}</a>
+    </p>
+
+    <header class="mt-5 max-w-3xl">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class:list={['stamp', severityClass(data.severity)]}>{data.severity}</span>
+        <span class="stamp text-cyan">{data.reach}</span>
+      </div>
+      <h1 class="mt-4 text-3xl font-semibold tracking-tight text-pretty break-words sm:text-5xl">{data.title}</h1>
+      <p class="mt-4 text-lg leading-relaxed text-cream/85">{data.lede}</p>
+    </header>
+
+    <dl class="report-meta mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div>
+        <dt>Target</dt>
+        <dd class="flex items-center gap-2">
+          {meta.logo ? <img src={meta.logo} alt="" width="18" height="18" class="h-[18px] w-[18px] object-contain" /> : null}
+          {data.target} {data.product}
+        </dd>
+      </div>
+      <div>
+        <dt>Component</dt>
+        <dd class="font-mono text-[0.82rem]">{data.component}</dd>
+      </div>
+      <div>
+        <dt>Reach</dt>
+        <dd>{data.reach}</dd>
+      </div>
+      <div>
+        <dt>Revision</dt>
+        <dd class="font-mono text-[0.82rem]">{commitShort ?? '—'}</dd>
+      </div>
+    </dl>
+
+    <div class="mt-10 grid gap-10 lg:grid-cols-12">
+      {
+        headings.filter((h) => h.depth === 2).length > 0 && (
+          <aside class="lg:col-span-3">
+            <nav class="report-toc lg:sticky lg:top-24" aria-label="On this page">
+              <p class="text-xs font-semibold tracking-wide text-cyan">On this page</p>
+              <ol class="mt-3 space-y-2">
+                {headings
+                  .filter((h) => h.depth === 2)
+                  .map((h) => (
+                    <li>
+                      <a href={`#${h.slug}`}>{h.text}</a>
+                    </li>
+                  ))}
+              </ol>
+            </nav>
+          </aside>
+        )
+      }
+      <article class="report min-w-0 lg:col-span-9">
+        <Content />
+      </article>
+    </div>
+
+    <nav class="mt-14 grid gap-3 border-t-[3px] border-cream pt-8 sm:grid-cols-2" aria-label="More in this series">
+      {
+        prev ? (
+          <a class="finding-card" href={findingHref(prev.data.series, prev.id)}>
+            <p class="text-xs font-medium text-cyan">Previous</p>
+            <p class="mt-2 font-semibold tracking-tight">{prev.data.title}</p>
+          </a>
+        ) : (
+          <div></div>
+        )
+      }
+      {
+        next ? (
+          <a class="finding-card" href={findingHref(next.data.series, next.id)}>
+            <p class="text-xs font-medium text-cyan">Next</p>
+            <p class="mt-2 font-semibold tracking-tight">{next.data.title}</p>
+          </a>
+        ) : null
+      }
+    </nav>
+  </main>
+  <Footer />
+  <script src="../../../scripts/mermaid.ts"></script>
+</Base>

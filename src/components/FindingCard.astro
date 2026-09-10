@@ -1,0 +1,31 @@
+---
+import { severityClass, findingHref, type Severity } from '../data/findings';
+
+interface Props {
+  id: string;
+  title: string;
+  lede: string;
+  severity: Severity;
+  series: string;
+  product: string;
+  reach: string;
+  component: string;
+}
+
+const { id, title, lede, severity, series, product, reach, component } = Astro.props;
+const href = findingHref(series, id);
+---
+
+<a class="finding-card" href={href}>
+  <div class="flex flex-wrap items-center gap-2">
+    <span class:list={['stamp', severityClass(severity)]}>{severity}</span>
+    <span class="text-xs font-medium text-mute">{product}</span>
+  </div>
+  <h3 class="mt-3 text-lg font-semibold tracking-tight text-cream">{title}</h3>
+  <p class="mt-2 text-sm leading-relaxed text-cream/80">{lede}</p>
+  <p class="mt-4 font-mono text-[0.7rem] leading-relaxed text-mute">
+    {reach}
+    <span class="text-cream/30"> · </span>
+    {component}
+  </p>
+</a>

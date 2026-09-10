@@ -119,6 +119,12 @@ body {
   line-height: 1.2;
 }
 
+.stamp-crit {
+  color: var(--color-ink);
+  background: var(--color-high);
+  border-color: var(--color-high);
+}
+
 .stamp-high {
   color: var(--color-high);
   background: color-mix(in srgb, var(--color-high) 12%, transparent);
@@ -143,7 +149,12 @@ body {
 
 #scope,
 #targets,
-#contact {
+#contact,
+#findings,
+#microsoft,
+#obyte,
+#gvisor,
+#audit {
   scroll-margin-top: 5.5rem;
 }
 
@@ -212,9 +223,10 @@ body {
 }
 
 .logo-chip img {
-  width: 22px;
-  height: 22px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
+  object-fit: contain;
 }
 
 @keyframes logo-left {
@@ -294,6 +306,178 @@ body {
   letter-spacing: -0.03em;
   overflow-wrap: anywhere;
   line-height: 1.2;
+}
+
+.finding-card {
+  display: block;
+  height: 100%;
+  background: var(--color-panel);
+  border: 3px solid var(--color-cream);
+  box-shadow: 5px 5px 0 0 var(--color-cyan);
+  padding: 1.15rem 1.2rem 1.1rem;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.finding-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 7px 7px 0 0 var(--color-cyan);
+}
+
+.report-meta {
+  border: 3px solid var(--color-cream);
+  background: var(--color-panel);
+  padding: 1rem 1.1rem;
+  box-shadow: 5px 5px 0 0 var(--color-cyan);
+}
+
+.report-meta dt {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-cyan);
+}
+
+.report-meta dd {
+  margin-top: 0.3rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.report-toc a {
+  color: var(--color-mute);
+  text-decoration: none;
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.report-toc a:hover {
+  color: var(--color-cyan);
+}
+
+.report {
+  font-size: 1.02rem;
+  line-height: 1.7;
+  overflow-wrap: break-word;
+}
+
+.report :is(h2, h3) {
+  scroll-margin-top: 5.5rem;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+
+.report h2 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.85rem;
+  font-size: 1.55rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 2px solid color-mix(in srgb, var(--color-cream) 35%, transparent);
+}
+
+.report h3 {
+  margin-top: 1.7rem;
+  margin-bottom: 0.6rem;
+  font-size: 1.15rem;
+}
+
+.report p,
+.report ul,
+.report ol,
+.report table,
+.report pre,
+.report .diagram {
+  margin-top: 0.95rem;
+  margin-bottom: 0.95rem;
+}
+
+.report ul,
+.report ol {
+  padding-left: 1.2rem;
+}
+
+.report li + li {
+  margin-top: 0.35rem;
+}
+
+.report a {
+  color: var(--color-cyan);
+  font-weight: 500;
+}
+
+.report code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+}
+
+.report :not(pre) > code {
+  background: var(--color-raised);
+  border: 1px solid color-mix(in srgb, var(--color-cream) 28%, transparent);
+  padding: 0.08em 0.35em;
+}
+
+.report pre {
+  border: 3px solid var(--color-cream);
+  background: var(--color-ink);
+  overflow-x: auto;
+  padding: 1rem 1.05rem;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.report pre code {
+  font-size: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+.report table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.report th,
+.report td {
+  border: 2px solid color-mix(in srgb, var(--color-cream) 40%, transparent);
+  padding: 0.45rem 0.65rem;
+  text-align: left;
+}
+
+.report th {
+  background: var(--color-raised);
+  font-weight: 600;
+}
+
+.report blockquote {
+  border-left: 4px solid var(--color-lime);
+  background: var(--color-raised);
+  padding: 0.7rem 1rem;
+  color: color-mix(in srgb, var(--color-cream) 90%, transparent);
+}
+
+.diagram {
+  border: 3px solid var(--color-cream);
+  background: var(--color-raised);
+  padding: 1rem 0.7rem;
+  overflow-x: auto;
+  box-shadow: 4px 4px 0 0 var(--color-cyan);
+}
+
+.diagram .mermaid {
+  margin: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.diagram svg {
+  display: block;
+  margin-inline: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {

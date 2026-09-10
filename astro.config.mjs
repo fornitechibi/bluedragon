@@ -11,5 +11,8 @@ export default defineConfig({
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],
+    optimizeDeps: {
+      include: ['mermaid'],
+    },
   },
 });

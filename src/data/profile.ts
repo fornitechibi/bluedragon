@@ -54,6 +54,7 @@ export const orgs = [
   { name: 'Google', logo: '/logos/google.svg' },
   { name: 'Microsoft', logo: '/logos/microsoft.svg' },
   { name: 'Cloudflare', logo: '/logos/cloudflare.svg' },
+  { name: 'Polygon', logo: '/logos/polygon.svg' },
   { name: 'Flare', logo: '/logos/flare.svg' },
   { name: 'Obyte', logo: '/logos/obyte.svg' },
   { name: 'Sei', logo: '/logos/sei.svg' },

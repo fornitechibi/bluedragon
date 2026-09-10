@@ -6,7 +6,10 @@ import Base from '../layouts/Base.astro';
   <main class="mx-auto flex min-h-svh max-w-3xl flex-col justify-center px-6">
     <p class="section-kicker">Page not found</p>
     <h1 class="mt-3 text-6xl font-semibold tracking-tight">404</h1>
-    <p class="mt-4 max-w-md text-lg text-cream/85">This path is not in the report. Start at the homepage.</p>
-    <a class="neo-btn mt-8 w-fit" href="/">Back to home</a>
+    <p class="mt-4 max-w-md text-lg text-cream/85">This path is not in the report. Start at the homepage or the findings index.</p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a class="neo-btn w-fit" href="/">Back to home</a>
+      <a class="neo-btn neo-btn-ghost w-fit" href="/findings">Findings</a>
+    </div>
   </main>
 </Base>
