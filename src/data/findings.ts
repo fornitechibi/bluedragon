@@ -1,4 +1,4 @@
-export const seriesOrder = ['microsoft', 'obyte', 'gvisor', 'audit'] as const;
+export const seriesOrder = ['microsoft', 'obyte', 'gvisor', 'tink', 'polygon', 'audit'] as const;
 
 export type SeriesId = (typeof seriesOrder)[number];
 export type Severity = 'Critical' | 'High' | 'Medium' | 'Low';
@@ -42,7 +42,23 @@ export const seriesMeta: Record<
     product: 'gVisor',
     logo: '/logos/google.svg',
     blurb:
-      'Sandbox and kernel-emulation research against gVisor. Public writeups for this series are being prepared.',
+      'Sandbox boundary work against gVisor — Sentry device proxies, GPU nvproxy, and guest-to-host isolation.',
+  },
+  tink: {
+    id: 'tink',
+    label: 'Google',
+    product: 'Tink C++',
+    logo: '/logos/google.svg',
+    blurb:
+      'Cryptographic library work against Tink C++ — keyset import, material-type validation, and AEAD dispatch.',
+  },
+  polygon: {
+    id: 'polygon',
+    label: 'Polygon',
+    product: 'Bor',
+    logo: '/logos/polygon.svg',
+    blurb:
+      'JSON-RPC and execution-client work against Polygon Bor — unauthenticated RPC amplification and node availability.',
   },
   audit: {
     id: 'audit',

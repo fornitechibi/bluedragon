@@ -4,7 +4,7 @@ Source notes for public writeups. Files in this tree are **not** rendered on the
 
 Pipeline:
 
-1. Drop the full research report here (`microsoft/`, `obyte/`, `gvisor/`, `audit/`, …).
+1. Drop the full research report here (`microsoft/`, `obyte/`, `google/`, `polygon/`, …).
 2. Convert it to a blog-style report in `src/content/findings/<series>/<slug>.md`.
 3. Keep PoC dumps and debugger logs in this folder; the public page should explain the bug with mermaid diagrams and short excerpts.
 

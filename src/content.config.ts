@@ -11,7 +11,7 @@ const findings = defineCollection({
     title: z.string(),
     lede: z.string(),
     severity: z.enum(['Critical', 'High', 'Medium', 'Low']),
-    series: z.enum(['microsoft', 'obyte', 'gvisor', 'audit']),
+    series: z.enum(['microsoft', 'obyte', 'gvisor', 'tink', 'polygon', 'audit']),
     product: z.string(),
     target: z.string(),
     component: z.string(),
