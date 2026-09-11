@@ -26,7 +26,7 @@ Public reports are an Astro content collection.
 
 1. Drop the raw research note in `findings/<org>/` (source archive, not rendered).
 2. Add a blog-style markdown file in `src/content/findings/<series>/<slug>.md` with the collection frontmatter (`title`, `lede`, `severity`, `series`, `product`, `target`, `component`, `reach`, `date`).
-3. `series` is one of `microsoft`, `obyte`, `gvisor`, `tink`, `polygon`, `audit`. New series go in `src/data/findings.ts`.
+3. New series go in `src/data/findings.ts` and the matching `series` enum in `src/content.config.ts`. Use `/report-enhancer` to convert a raw note.
 4. Use fenced `mermaid` blocks for architecture and attack-path diagrams. They render on the report page.
 
 Routes:

@@ -1,4 +1,4 @@
-export const seriesOrder = ['microsoft', 'obyte', 'gvisor', 'tink', 'polygon', 'audit'] as const;
+export const seriesOrder = ['microsoft', 'cloudflare', 'obyte', 'gvisor', 'tink', 'polygon', 'audit'] as const;
 
 export type SeriesId = (typeof seriesOrder)[number];
 export type Severity = 'Critical' | 'High' | 'Medium' | 'Low';
@@ -27,6 +27,14 @@ export const seriesMeta: Record<
     logo: '/logos/microsoft.svg',
     blurb:
       'Protocol, FFI, and memory-safety work against Microsoft MsQuic — the open-source QUIC stack used across Windows and Azure surfaces.',
+  },
+  cloudflare: {
+    id: 'cloudflare',
+    label: 'Cloudflare',
+    product: 'cloudflared',
+    logo: '/logos/cloudflare.svg',
+    blurb:
+      'Client and tunnel work against cloudflared — Access token handling, origin SNI, and connection reuse.',
   },
   obyte: {
     id: 'obyte',
