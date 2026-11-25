@@ -692,21 +692,33 @@ a {
 
 .adv {
   display: grid;
-  gap: 1.5rem;
-  padding: clamp(1.25rem, 3vw, 2rem);
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'body dial' 'links links';
+  gap: 1.25rem 1rem;
+  padding: clamp(1.25rem, 2.5vw, 1.6rem);
 }
 
-@media (min-width: 960px) {
-  .adv {
-    grid-template-columns: minmax(0, 1fr) 15rem;
-    gap: 2.5rem;
-  }
+.adv > :first-child {
+  grid-area: body;
+}
+
+.adv-dial {
+  grid-area: dial;
+  align-self: start;
+}
+
+.adv-links {
+  grid-area: links;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-self: end;
 }
 
 .adv-id {
   font-family: var(--font-mono);
   font-weight: 500;
-  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-size: clamp(1.25rem, 2.4vw, 1.6rem);
   letter-spacing: -0.02em;
   color: #fff;
 }
@@ -1189,14 +1201,10 @@ a {
   white-space: nowrap;
   font-weight: 600;
   font-size: 0.98rem;
-  filter: grayscale(1) brightness(1.4);
-  opacity: 0.75;
-  transition: filter 0.3s, opacity 0.3s, border-color 0.3s;
+  transition: border-color 0.3s;
 }
 
 .logo-chip:hover {
-  filter: none;
-  opacity: 1;
   border-color: var(--color-line-strong);
 }
 

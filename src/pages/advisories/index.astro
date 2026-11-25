@@ -19,7 +19,7 @@ const products = new Set(advisories.flatMap((a) => a.affected.map((p) => `${p.pr
       <p class="kicker">Vendor advisories</p>
       <h1 class="display text-[clamp(2.6rem,7vw,5rem)]">Credited CVEs</h1>
       <p class="lede">
-        Advisories where a vendor named {profile.name} as a finder. Fields are copied from the vendor's own record, and each card links to it.
+        Advisories where a vendor named {profile.name} as a finder. Each card links to the vendor's own record. The full advisory pages carry the attack vector, fixed builds, and acknowledgement.
       </p>
     </div>
 
@@ -30,7 +30,7 @@ const products = new Set(advisories.flatMap((a) => a.affected.map((p) => `${p.pr
       <div><dt>Product builds fixed</dt><dd class="text-2xl">{products}</dd></div>
     </dl>
 
-    <div class="grid gap-6">
+    <div class="grid gap-5 md:grid-cols-2">
       {advisories.map((a) => <AdvisoryCard advisory={a} headingLevel="h2" />)}
     </div>
   </main>

@@ -5,12 +5,13 @@ const path = Astro.url.pathname;
 const isHome = path === '/' || path === '';
 const at = (hash: string) => (isHome ? `#${hash}` : `/#${hash}`);
 
+// Page order. Only the two links marked `phone` show on small screens.
 const links = [
-  { label: 'CVEs', href: '/advisories', section: 'advisories', match: '/advisories' },
-  { label: 'Findings', href: '/findings', section: 'findings', match: '/findings' },
+  { label: 'Experience', href: at('experience'), section: 'experience' },
+  { label: 'CVEs', href: '/advisories', section: 'advisories', match: '/advisories', phone: true },
+  { label: 'Findings', href: '/findings', section: 'findings', match: '/findings', phone: true },
   { label: 'Record', href: at('record'), section: 'record' },
   { label: 'Agents', href: at('agents'), section: 'agents' },
-  { label: 'Experience', href: at('experience'), section: 'experience' },
   { label: 'Contact', href: at('contact'), section: 'contact' },
 ];
 ---
@@ -26,12 +27,12 @@ const links = [
       <nav class="nav-links" aria-label="Primary" data-nav>
         <span class="nav-indicator" data-nav-indicator aria-hidden="true"></span>
         {
-          links.map((l, i) => (
+          links.map((l) => (
             <a
               href={l.href}
               data-section={isHome ? l.section : undefined}
               aria-current={l.match && path.startsWith(l.match) ? 'true' : undefined}
-              class:list={[i > 1 && 'max-md:hidden']}
+              class:list={[!l.phone && 'max-md:hidden']}
             >
               {l.label}
             </a>

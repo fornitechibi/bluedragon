@@ -8,11 +8,11 @@ import AdvisoryCard from './AdvisoryCard.astro';
     <p class="kicker">Vendor advisories</p>
     <h2 id="advisories-heading" class="h-section">Credited CVEs</h2>
     <p class="lede">
-      Microsoft fixed both in the October 2026 security updates for Windows, .NET, and Visual Studio. Each record below mirrors the vendor advisory and links back to it, so every field can be checked at the source.
+      Microsoft fixed both in the October 2026 security updates for Windows, .NET, and Visual Studio. Each card links to the Microsoft advisory, and to a full record with the attack vector, fixed builds, and acknowledgement.
     </p>
   </div>
 
-  <div class="grid gap-6">
+  <div class="grid gap-5 md:grid-cols-2">
     {advisories.map((a) => <AdvisoryCard advisory={a} />)}
   </div>
 </section>
