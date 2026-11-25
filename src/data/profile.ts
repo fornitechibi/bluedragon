@@ -1,17 +1,17 @@
 export const profile = {
   name: 'Shibi Kishore N',
   handle: 'Bluedragon',
-  title: 'Independent Security Researcher',
+  title: 'Security Researcher and AI Agentic Engineer',
   credential: 'Ex-Cantina Triager',
   email: 'shibikishore5@gmail.com',
   location: 'Remote',
-  availability: 'Open for audits and AI systems work',
+  availability: 'Open for security reviews and agent engineering',
   nsloc: '100k+',
-  findings: '60+',
+  findings: '100+',
   years: '2',
   triaged: '5,000+',
   summary:
-    'Independent security researcher and bug bounty hunter. Two years reviewing EVM contracts and DLT internals — execution engines, BFT, and consensus. Previously a Cantina triager. For the last eight months I have been building AI harnesses, context-engineering pipelines, and production agentic systems.',
+    'Independent security researcher and AI agentic engineer. Two years reviewing EVM contracts and DLT internals, a former Cantina triager, and now building autonomous agents with persistent memory that run for more than a day on their own.',
   links: {
     x: 'https://x.com/shibi_kishore',
     github: 'https://github.com/fornitechibi',
@@ -36,7 +36,7 @@ export const roles = [
   {
     period: '2 years',
     title: 'Security research and bug bounty',
-    body: 'Independent audits and bounty hunting across EVM smart contracts, execution engines, BFT, and consensus. 100k+ nSLOC reviewed. 60+ validated security findings in contests, live programs, and open source.',
+    body: 'Independent audits and bounty hunting across EVM smart contracts, execution engines, BFT, and consensus. 100k+ nSLOC reviewed. 100+ validated security findings in contests, live programs, and open source.',
   },
   {
     period: 'Cantina',
@@ -45,8 +45,8 @@ export const roles = [
   },
   {
     period: '8 months',
-    title: 'AI harnesses and agentic systems',
-    body: 'Building AI harnesses, context-engineering pipelines, production-grade workflows, and agentic systems — including tooling that supports security review at scale.',
+    title: 'AI agentic engineering',
+    body: 'Building and researching long-running autonomous agents: persistent memory, agent harnesses and context pipelines, and tool interfaces built to be more dependable than MCP servers. The same agents now support my own security review.',
   },
 ] as const;
 

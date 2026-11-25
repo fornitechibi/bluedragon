@@ -1,15 +1,21 @@
 ---
 import '../styles/global.css';
 import { profile } from '../data/profile';
+import { advisories } from '../data/advisories';
+import CommandPalette from '../components/CommandPalette.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  progress?: boolean;
 }
 
+const cveList = advisories.map((a) => a.id).join(' and ');
+
 const {
-  title = `${profile.handle} — ${profile.name} | Security Researcher`,
-  description = `${profile.name}, ${profile.handle}. Independent security researcher and ex-Cantina triager. ${profile.findings} findings, ${profile.triaged} reports triaged, ${profile.nsloc} nSLOC. Also builds AI harnesses and agentic systems.`,
+  title = `${profile.handle} | ${profile.name}, security researcher and AI agentic engineer`,
+  description = `${profile.name} (${profile.handle}), security researcher and AI agentic engineer, credited by Microsoft for ${cveList}. ${profile.findings} validated findings, ${profile.triaged} reports triaged at Cantina, ${profile.nsloc} nSLOC reviewed. Builds autonomous agents with persistent memory.`,
+  progress = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -20,11 +26,13 @@ const og = new URL('/og.jpg', Astro.site);
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content={profile.name} />
-    <meta name="theme-color" content="#07090F" />
+    <meta name="theme-color" content="#040812" />
+    <meta name="color-scheme" content="dark" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -54,7 +62,9 @@ const og = new URL('/og.jpg', Astro.site);
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
+    {progress && <div class="scroll-progress" data-progress aria-hidden="true"></div>}
     <slot />
+    <CommandPalette />
     <script src="../scripts/ui.ts"></script>
   </body>
 </html>

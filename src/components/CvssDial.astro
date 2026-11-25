@@ -1,0 +1,31 @@
+---
+import { cvssRating } from '../data/advisories';
+
+interface Props {
+  score: number;
+  label?: string;
+  size?: 'md' | 'sm';
+}
+
+const { score, label = 'CVSS 3.1 base', size = 'md' } = Astro.props;
+const rating = cvssRating(score);
+const color =
+  rating === 'Critical' ? 'var(--color-crit)' : rating === 'High' ? 'var(--color-high)' : rating === 'Medium' ? 'var(--color-med)' : 'var(--color-low)';
+---
+
+<div
+  class:list={['dial', size === 'sm' && '!w-[6.5rem]']}
+  data-reveal
+  style={`--score:${score}; --dial-c:${color}`}
+  role="img"
+  aria-label={`${label} ${score.toFixed(1)}, ${rating}`}
+>
+  <svg viewBox="0 0 100 100" aria-hidden="true">
+    <circle class="track" cx="50" cy="50" r="45"></circle>
+    <circle class="bar" cx="50" cy="50" r="45"></circle>
+  </svg>
+  <div class="dial-read" aria-hidden="true">
+    <strong class:list={[size === 'sm' && '!text-[1.6rem]']}>{score.toFixed(1)}</strong>
+    <span style={`color:${color}`} class="font-semibold">{rating}</span>
+  </div>
+</div>

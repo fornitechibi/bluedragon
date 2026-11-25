@@ -1,0 +1,65 @@
+---
+import { getCollection } from 'astro:content';
+import { advisories, advisoryHref } from '../data/advisories';
+import { findingHref } from '../data/findings';
+import { profile } from '../data/profile';
+
+const findings = (await getCollection('findings')).sort((a, b) => a.data.product.localeCompare(b.data.product));
+
+const groups = [
+  {
+    name: 'Pages',
+    items: [
+      { label: 'Home', href: '/', hint: '' },
+      { label: 'Credited CVEs', href: '/advisories', hint: `${advisories.length}` },
+      { label: 'All findings', href: '/findings', hint: `${findings.length}` },
+      { label: 'Contest record', href: '/#record', hint: '' },
+      { label: 'AI agentic engineering', href: '/#agents', hint: '' },
+      { label: 'Experience', href: '/#experience', hint: '' },
+      { label: 'Contact', href: '/#contact', hint: '' },
+    ],
+  },
+  {
+    name: 'CVEs',
+    items: advisories.map((a) => ({ label: `${a.id} ${a.title}`, href: advisoryHref(a), hint: a.cvss.base.toFixed(1) })),
+  },
+  {
+    name: 'Findings',
+    items: findings.map((f) => ({ label: f.data.title, href: findingHref(f.data.series, f.id), hint: f.data.product })),
+  },
+  {
+    name: 'Elsewhere',
+    items: [
+      { label: 'Email', href: `mailto:${profile.email}`, hint: '' },
+      { label: 'GitHub', href: profile.links.github, hint: '' },
+      { label: 'Sherlock profile', href: profile.links.sherlock, hint: '' },
+      { label: 'Immunefi profile', href: profile.links.immunefi, hint: '' },
+      { label: 'X', href: profile.links.x, hint: '' },
+    ],
+  },
+];
+---
+
+<div class="cmdk" data-cmdk data-open="false" aria-hidden="true">
+  <div class="cmdk-box" role="dialog" aria-modal="true" aria-label="Search the site">
+    <input type="search" placeholder="Search CVEs, findings, pages" autocomplete="off" spellcheck="false" data-cmdk-input aria-controls="cmdk-list" />
+    <ul id="cmdk-list" role="listbox" data-cmdk-list>
+      {
+        groups.map((g) => (
+          <>
+            <li class="group" role="presentation" data-cmdk-group={g.name}>{g.name}</li>
+            {g.items.map((it) => (
+              <li role="presentation" data-cmdk-item data-group={g.name} data-text={`${it.label} ${it.hint}`.toLowerCase()}>
+                <a href={it.href} role="option" aria-selected="false" tabindex="-1">
+                  <span class="min-w-0 truncate">{it.label}</span>
+                  {it.hint && <span class="flex-none text-xs text-mute">{it.hint}</span>}
+                </a>
+              </li>
+            ))}
+          </>
+        ))
+      }
+    </ul>
+    <p class="hidden px-4 pb-4 text-sm text-mute" data-cmdk-empty>No matches. Try a product name like MsQuic or gVisor.</p>
+  </div>
+</div>

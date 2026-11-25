@@ -3,28 +3,51 @@ import { profile } from '../data/profile';
 
 const path = Astro.url.pathname;
 const isHome = path === '/' || path === '';
-const onFindings = path.startsWith('/findings');
+const at = (hash: string) => (isHome ? `#${hash}` : `/#${hash}`);
+
+const links = [
+  { label: 'CVEs', href: '/advisories', section: 'advisories', match: '/advisories' },
+  { label: 'Findings', href: '/findings', section: 'findings', match: '/findings' },
+  { label: 'Record', href: at('record'), section: 'record' },
+  { label: 'Agents', href: at('agents'), section: 'agents' },
+  { label: 'Experience', href: at('experience'), section: 'experience' },
+  { label: 'Contact', href: at('contact'), section: 'contact' },
+];
 ---
 
-<header class="site-header">
-  <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6">
-    <a href="/" class="flex items-center gap-3 no-underline">
-      <img
-        src="/bluedragon.jpg"
-        alt=""
-        width="40"
-        height="40"
-        class="h-10 w-10 border-[3px] border-cream object-cover"
-      />
-      <span class="text-base font-semibold tracking-tight sm:text-lg">
-        {profile.handle}
-      </span>
-    </a>
-    <nav class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium sm:gap-6">
-      <a class="hover:text-cyan" href={isHome ? '#scope' : '/#scope'}>Experience</a>
-      <a class:list={['hover:text-cyan', onFindings && 'text-cyan']} href="/findings">Findings</a>
-      <a class="hover:text-cyan" href={isHome ? '#targets' : '/#targets'}>Work</a>
-      <a class="hover:text-cyan" href={isHome ? '#contact' : '/#contact'}>Contact</a>
-    </nav>
+<header class="site-header" data-header>
+  <div class="wrap">
+    <div class="nav-shell">
+      <a href="/" class="flex items-center gap-2.5 rounded-full pr-2 no-underline" aria-label={`${profile.handle} home`}>
+        <img src="/bluedragon.jpg" alt="" width="36" height="36" class="h-9 w-9 rounded-full border border-line-strong object-cover" />
+        <span class="hidden text-[0.98rem] font-[680] tracking-tight [font-stretch:112%] sm:inline">{profile.handle}</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary" data-nav>
+        <span class="nav-indicator" data-nav-indicator aria-hidden="true"></span>
+        {
+          links.map((l, i) => (
+            <a
+              href={l.href}
+              data-section={isHome ? l.section : undefined}
+              aria-current={l.match && path.startsWith(l.match) ? 'true' : undefined}
+              class:list={[i > 1 && 'max-md:hidden']}
+            >
+              {l.label}
+            </a>
+          ))
+        }
+      </nav>
+
+      <button
+        type="button"
+        class="btn btn-ghost !h-9 !px-3 text-sm"
+        data-cmdk-open
+        aria-label="Search findings and CVEs"
+      >
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="9" cy="9" r="5.5"></circle><path d="m13.5 13.5 3.5 3.5" stroke-linecap="round"></path></svg>
+        <span class="kbd max-sm:hidden" data-kbd>⌘K</span>
+      </button>
+    </div>
   </div>
 </header>

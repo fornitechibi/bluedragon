@@ -3,7 +3,7 @@
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "Bluedragon — Shibi Kishore N. Independent security researcher portfolio.",
+  "description": "Bluedragon: Shibi Kishore N, security researcher and AI agentic engineer.",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
@@ -16,6 +16,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
     "@fontsource-variable/ibm-plex-sans": "^5.3.0",
+    "@fontsource-variable/mona-sans": "^5.3.0",
     "@fontsource/ibm-plex-mono": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.2.9",

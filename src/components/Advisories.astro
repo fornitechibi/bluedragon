@@ -1,0 +1,18 @@
+---
+import { advisories } from '../data/advisories';
+import AdvisoryCard from './AdvisoryCard.astro';
+---
+
+<section id="advisories" class="section wrap scroll-mt-24" aria-labelledby="advisories-heading">
+  <div class="section-head">
+    <p class="kicker">Vendor advisories</p>
+    <h2 id="advisories-heading" class="h-section">Credited CVEs</h2>
+    <p class="lede">
+      Microsoft fixed both in the October 2026 security updates for Windows, .NET, and Visual Studio. Each record below mirrors the vendor advisory and links back to it, so every field can be checked at the source.
+    </p>
+  </div>
+
+  <div class="grid gap-6">
+    {advisories.map((a) => <AdvisoryCard advisory={a} />)}
+  </div>
+</section>

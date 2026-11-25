@@ -1,42 +1,68 @@
 ---
 import { profile } from '../data/profile';
+import { advisories } from '../data/advisories';
+
+const letters = [...profile.handle];
+const ids = advisories.map((a) => a.id);
 ---
 
-<section class="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 sm:px-6 lg:grid-cols-12 lg:py-16">
-  <div class="min-w-0 lg:col-span-7">
-    <p class="section-kicker mb-3">
-      {profile.title} · {profile.credential}
-    </p>
-    <p class="text-sm font-medium text-mute">{profile.name}</p>
-    <h1 class="hero-title mt-1 text-cream">{profile.handle}</h1>
-    <p class="mt-6 max-w-xl text-lg leading-relaxed text-cream/90">
-      {profile.summary}
-    </p>
-    <p class="mt-4 max-w-xl text-base text-mute">
-      {profile.findings} validated security findings. Public writeups on this site; contest records on Sherlock and Immunefi.
-    </p>
-    <div class="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-      <a class="neo-btn" href="/findings">Read findings</a>
-      <a class="neo-btn neo-btn-ghost" href={profile.links.sherlock}>Sherlock profile</a>
-      <a class="neo-btn neo-btn-ghost" href={profile.links.immunefi}>Immunefi profile</a>
-    </div>
-  </div>
+<section class="hero wrap" aria-labelledby="hero-title">
+  <canvas class="heap" data-heap aria-hidden="true"></canvas>
 
-  <div class="relative mx-auto w-full max-w-md min-w-0 lg:col-span-5">
-    <div class="absolute -left-3 -top-3 z-10 bg-lime px-3 py-1 text-xs font-semibold text-ink shadow-[4px_4px_0_0_#f3ede0]">
-      {profile.availability}
+  <div class="min-w-0">
+    <a href="#advisories" class="credit-pill hero-rise" style="--d: 80ms">
+      <span class="badge">
+        <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><rect x="1" y="1" width="6.5" height="6.5" fill="#fff" opacity=".95"></rect><rect x="8.5" y="1" width="6.5" height="6.5" fill="#fff" opacity=".8"></rect><rect x="1" y="8.5" width="6.5" height="6.5" fill="#fff" opacity=".8"></rect><rect x="8.5" y="8.5" width="6.5" height="6.5" fill="#fff" opacity=".65"></rect></svg>
+        MSRC
+      </span>
+      <span class="credit-text">
+        <span>Credited by Microsoft for</span>
+        {
+          ids.map((id, i) => (
+            <>
+              {i > 0 && <span class="text-mute">and</span>}
+              <span class="cve-tag mono">{id}</span>
+            </>
+          ))
+        }
+      </span>
+    </a>
+
+    <h1 id="hero-title" class="hero-title mt-7" aria-label={profile.handle}>
+      {letters.map((ch, i) => <span class="ch" style={`--i:${i}`} aria-hidden="true">{ch}</span>)}
+    </h1>
+
+    <div class="mt-9 grid gap-8 lg:grid-cols-12 lg:items-end">
+      <div class="lg:col-span-7">
+        <div class="hero-rise flex items-center gap-4" style="--d: 650ms">
+          <div class="portrait">
+            <img src="/bluedragon.jpg" alt="Bluedragon avatar: a blue dragon in a hoodie" width="136" height="136" />
+          </div>
+          <div class="min-w-0">
+            <p class="text-lg font-[650] tracking-tight [font-stretch:108%]">{profile.name}</p>
+            <p class="text-[0.95rem] text-mute">Security researcher and AI agentic engineer</p>
+          </div>
+        </div>
+        <p class="lede hero-rise mt-6" style="--d: 760ms">
+          I find memory-safety, protocol, and consensus bugs in the software that moves packets and money: QUIC stacks, sandboxes, crypto libraries, execution clients, and smart contracts.
+        </p>
+        <p class="lede hero-rise mt-3" style="--d: 820ms">
+          I also build AI agents that run on their own: persistent memory, dependable tooling, and autonomous work that lasts more than 24 hours.
+        </p>
+      </div>
+
+      <div class="hero-rise flex flex-col gap-5 lg:col-span-5 lg:items-end" style="--d: 880ms">
+        <p class="inline-flex items-center gap-2.5 text-sm text-mute">
+          <span class="live-dot" aria-hidden="true"></span>
+          {profile.availability}
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a class="btn btn-primary" href="#advisories">Read the advisories</a>
+          <a class="btn btn-ghost" href="/findings">Browse findings</a>
+        </div>
+      </div>
     </div>
-    <figure class="portrait-frame">
-      <img
-        src="/bluedragon.jpg"
-        alt="Bluedragon, cartoon portrait of a blue dragon wearing a hoodie"
-        width="900"
-        height="900"
-        class="block w-full"
-      />
-    </figure>
-    <p class="mt-4 text-sm text-mute">
-      {profile.name} · {profile.handle}
-    </p>
   </div>
 </section>
+
+<script src="../scripts/heap.ts"></script>

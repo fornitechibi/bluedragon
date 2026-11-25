@@ -1,0 +1,229 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import CvssDial from '../../components/CvssDial.astro';
+import VectorGrid from '../../components/VectorGrid.astro';
+import { advisories, advisoryHref, formatDate, type Advisory } from '../../data/advisories';
+import { profile } from '../../data/profile';
+
+export function getStaticPaths() {
+  return advisories.map((advisory) => ({ params: { slug: advisory.slug }, props: { advisory } }));
+}
+
+const { advisory: a } = Astro.props as { advisory: Advisory };
+const others = advisories.filter((x) => x.id !== a.id);
+
+const familyLabel: Record<string, string> = {
+  Windows: 'Windows',
+  Other: '.NET runtime package',
+  'Developer Tools': 'Visual Studio',
+};
+const groups = Object.entries(
+  a.affected.reduce<Record<string, typeof a.affected>>((acc, p) => {
+    (acc[familyLabel[p.family]] ??= []).push(p);
+    return acc;
+  }, {}),
+);
+
+const toc = [
+  { id: 'summary', label: 'Summary' },
+  { id: 'cvss', label: 'CVSS 3.1 score' },
+  { id: 'exploitability', label: 'Exploitability' },
+  { id: 'faq', label: 'Vendor FAQ' },
+  { id: 'updates', label: 'Security updates' },
+  { id: 'acknowledgements', label: 'Acknowledgements' },
+  { id: 'revisions', label: 'Revisions' },
+];
+---
+
+<Base title={`${a.id}: ${a.title} | ${profile.handle}`} description={`${a.id}. ${a.description} Credited to ${profile.name}.`} progress>
+  <Nav />
+  <main id="main" class="wrap pb-24 pt-12 sm:pt-16">
+    <p class="text-sm text-mute">
+      <a class="link" href="/advisories">Credited CVEs</a>
+      <span class="px-1.5 opacity-40">/</span>
+      <span class="mono">{a.id}</span>
+    </p>
+
+    <header class="mt-6 grid gap-8 lg:grid-cols-12 lg:items-end">
+      <div class="min-w-0 lg:col-span-8">
+        <div class="flex items-center gap-2 text-sm text-mute">
+          <img src="/logos/microsoft.svg" alt="" width="18" height="18" class="h-[18px] w-[18px]" />
+          Microsoft Security Response Center
+        </div>
+        <h1 class="mt-4">
+          <span class="adv-id block !text-[clamp(1.9rem,5vw,3.4rem)]">{a.id}</span>
+          <span class="display mt-3 block text-[clamp(1.5rem,3.4vw,2.4rem)] !leading-[1.1]">{a.title}</span>
+        </h1>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span class="sev sev-important">{a.severity}</span>
+          <span class="chip">{a.impact}</span>
+          <span class="chip"><span class="mono text-frost">{a.cwe.id}</span>{a.cwe.name}</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-3 lg:col-span-4 lg:justify-end">
+        <a class="btn btn-primary" href={a.links.vendor} rel="noopener">
+          Verify on MSRC
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M5 11 11 5M6 5h5v5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+        </a>
+        <a class="btn btn-ghost" href={a.links.cve} rel="noopener">CVE record</a>
+      </div>
+    </header>
+
+    <dl class="report-meta mt-10 grid-cols-2 lg:grid-cols-4">
+      <div><dt>Released</dt><dd>{formatDate(a.released)}</dd></div>
+      <div><dt>Last revised</dt><dd>{formatDate(a.lastRevised)}</dd></div>
+      <div><dt>Assigning CNA</dt><dd>{a.cna}</dd></div>
+      <div><dt>Product</dt><dd>{a.product}</dd></div>
+    </dl>
+
+    <div class="mt-14 grid gap-12 lg:grid-cols-12">
+      <aside class="hidden lg:col-span-3 lg:block">
+        <nav class="rail" aria-label="On this page" data-rail>
+          <span class="rail-thumb" data-rail-thumb aria-hidden="true"></span>
+          <p class="mb-2 text-xs text-mute">On this page</p>
+          {toc.map((t) => <a href={`#${t.id}`} data-rail-link={t.id}>{t.label}</a>)}
+        </nav>
+      </aside>
+
+      <article class="report min-w-0 !max-w-none lg:col-span-9">
+        <section id="summary" data-rail-section>
+          <h2 class="!mt-0">Summary</h2>
+          <blockquote>{a.description}</blockquote>
+          <p>
+            Microsoft rated this <strong>{a.severity}</strong> with a maximum impact of <strong>{a.impact}</strong>, and published fixes in the {a.release}.
+          </p>
+          {a.relatedWriteup && <p>The technical writeup is on this site: <a href={a.relatedWriteup}>read the full report</a>.</p>}
+        </section>
+
+        <section id="cvss" data-rail-section>
+          <h2>CVSS 3.1 score</h2>
+          <div class="not-prose panel mt-4 grid gap-8 p-6 sm:grid-cols-[auto_1fr] sm:items-center">
+            <div class="flex items-center gap-6">
+              <div class="flex flex-col items-center">
+                <CvssDial score={a.cvss.base} />
+                <span class="mt-1 text-xs text-mute">Base</span>
+              </div>
+              <div class="flex flex-col items-center">
+                <CvssDial score={a.cvss.temporal} label="CVSS 3.1 temporal" size="sm" />
+                <span class="mt-1 text-xs text-mute">Temporal</span>
+              </div>
+            </div>
+            <p class="well mono break-all px-4 py-3 text-[0.8rem] leading-relaxed text-frost">{a.cvss.vector}</p>
+          </div>
+          <h3>Base metrics</h3>
+          <VectorGrid vector={a.cvss.vector} />
+          <h3>Temporal metrics</h3>
+          <VectorGrid vector={a.cvss.vector} temporal />
+        </section>
+
+        <section id="exploitability" data-rail-section>
+          <h2>Exploitability</h2>
+          <div class="table-scroll"><table>
+            <thead><tr><th>Publicly disclosed</th><th>Exploited</th><th>Latest software release</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>{a.exploitability.publiclyDisclosed ? 'Yes' : 'No'}</td>
+                <td>{a.exploitability.exploited ? 'Yes' : 'No'}</td>
+                <td>{a.exploitability.assessment}</td>
+              </tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="faq" data-rail-section>
+          <h2>Vendor FAQ</h2>
+          <p class="text-mute">Quoted from Microsoft's advisory.</p>
+          {
+            a.faq.map((f) => (
+              <details class="disclose panel mt-3 !rounded-[14px]">
+                <summary class="flex items-start justify-between gap-4 px-5 py-4 font-semibold leading-snug">
+                  <span>{f.q}</span>
+                  <svg class="chev mt-1 h-4 w-4 flex-none text-mute" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="m4 6 4 4 4-4" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                </summary>
+                <div class="disclose-body">
+                  <div>
+                    <p class="!my-0 px-5 pb-5 text-fg/80">{f.a}</p>
+                  </div>
+                </div>
+              </details>
+            ))
+          }
+        </section>
+
+        <section id="updates" data-rail-section>
+          <h2>Security updates</h2>
+          <p>{a.affected.length} affected products, all marked fixed. Customer action is required: install the update listed for your build.</p>
+          {
+            groups.map(([family, rows]) => (
+              <>
+                <h3>{family}</h3>
+                <div class="table-scroll"><table>
+                  <thead>
+                    <tr><th>Product</th><th>Fixed build</th><th>Update</th></tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((p) => (
+                      <tr>
+                        <td>
+                          {p.product}
+                          {p.platform && <span class="block text-sm text-mute">{p.platform}</span>}
+                        </td>
+                        <td class="mono whitespace-nowrap text-[0.85rem]">{p.fixedBuild ?? 'n/a'}</td>
+                        <td class="whitespace-nowrap">{p.articleUrl ? <a href={p.articleUrl} rel="noopener">{p.article}</a> : p.article}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table></div>
+              </>
+            ))
+          }
+        </section>
+
+        <section id="acknowledgements" data-rail-section>
+          <h2>Acknowledgements</h2>
+          <div class="ack">
+            <img src="/bluedragon.jpg" alt="" width="64" height="64" />
+            <p class="!my-0">
+              Microsoft lists <strong>{a.creditedAs}</strong> among the {a.finders} finders credited for this CVE.
+              <a href={a.links.vendor} rel="noopener">See the acknowledgements on MSRC</a>.
+            </p>
+          </div>
+        </section>
+
+        <section id="revisions" data-rail-section>
+          <h2>Revisions</h2>
+          <ol class="!list-none !pl-0">
+            {
+              [...a.revisions].reverse().map((r) => (
+                <li class="relative border-l border-line-strong pb-5 pl-6 last:pb-0">
+                  <span class="absolute -left-[5px] top-2 h-2.5 w-2.5 rounded-full bg-dragon shadow-[0_0_10px_var(--color-dragon)]" />
+                  <p class="!my-0 text-sm text-mute">
+                    <span class="mono text-frost">v{r.version}</span> on {formatDate(r.date)}
+                  </p>
+                  <p class="!my-1">{r.note}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </section>
+      </article>
+    </div>
+
+    {
+      others.length > 0 && (
+        <nav class="mt-20 grid gap-4 sm:grid-cols-2" aria-label="Other advisories">
+          {others.map((o) => (
+            <a class="panel spot finding" href={advisoryHref(o)} data-spot>
+              <span class="text-sm text-mute">Other credited CVE</span>
+              <span class="adv-id mt-2 !text-xl">{o.id}</span>
+              <span class="mt-1 font-semibold">{o.title}</span>
+            </a>
+          ))}
+        </nav>
+      )
+    }
+  </main>
+  <Footer />
+</Base>

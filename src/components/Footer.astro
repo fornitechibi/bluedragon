@@ -2,9 +2,15 @@
 import { profile } from '../data/profile';
 ---
 
-<footer class="border-t-[3px] border-cream">
-  <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-6 text-sm text-mute sm:px-6">
-    <p>© {new Date().getFullYear()} {profile.name} · {profile.handle}</p>
-    <p>Independent security researcher</p>
+<footer class="wrap pb-10 pt-4">
+  <hr class="rule" />
+  <div class="mt-6 flex flex-wrap items-center justify-between gap-4 text-sm text-mute">
+    <p>© {new Date().getFullYear()} {profile.name}. Published as {profile.handle}.</p>
+    <nav class="flex flex-wrap gap-5" aria-label="Footer">
+      <a class="hover:text-fg" href="/advisories">CVEs</a>
+      <a class="hover:text-fg" href="/findings">Findings</a>
+      <a class="hover:text-fg" href={profile.links.github} rel="noopener">GitHub</a>
+      <a class="hover:text-fg" href={profile.links.x} rel="noopener">X</a>
+    </nav>
   </div>
 </footer>

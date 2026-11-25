@@ -1,6 +1,8 @@
 # Bluedragon
 
-Personal site for **Shibi Kishore N** (Bluedragon) — independent security researcher, ex-Cantina triager.
+Personal site for **Shibi Kishore N** (Bluedragon): security researcher, AI agentic engineer, and former Cantina triager.
+
+Live at https://bluedragon.shibikishore5.workers.dev
 
 Static Astro site. Deployed with **Cloudflare Workers Builds** (Git integration). The site is fully pre-rendered; there is no Worker script.
 
@@ -19,6 +21,20 @@ npm run preview
 ```
 
 Edit copy, stats, and languages in `src/data/profile.ts`. Portrait source is `assets/Bluedragon-main.png` (served as `public/bluedragon.jpg`). Brand logos for the marquee live in `public/logos/` (copies also under `assets/logos/`).
+
+## Credited CVEs
+
+Vendor advisories that credit Bluedragon live in `src/data/advisories.ts` and render at `/advisories` and `/advisories/<cve-slug>`, plus the "Credited CVEs" section on the homepage.
+
+To add one, copy the fields from the vendor record. For Microsoft, the Security Update Guide API returns everything the page needs:
+
+```bash
+curl -s "https://api.msrc.microsoft.com/sug/v2.0/en-US/vulnerability?\$filter=cveNumber%20eq%20%27CVE-YYYY-NNNNN%27"
+curl -s "https://api.msrc.microsoft.com/sug/v2.0/en-US/affectedProduct?\$filter=cveNumber%20eq%20%27CVE-YYYY-NNNNN%27"
+curl -s "https://api.msrc.microsoft.com/sug/v2.0/en-US/acknowledgement?\$filter=cveNumber%20eq%20%27CVE-YYYY-NNNNN%27"
+```
+
+Keep the title, description, CVSS vector, CWE, and FAQ text verbatim. Set `relatedWriteup` if a public report in `src/content/findings` covers the same bug.
 
 ## Findings writeups
 
@@ -63,7 +79,7 @@ After `npm run build`, `npx wrangler deploy` uploads `dist/`. No extra `--projec
 
 ### After the first successful deploy
 
-The live URL is `https://bluedragon.<subdomain>.workers.dev` (or a custom domain you attach). Set:
+The live URL is `https://bluedragon.shibikishore5.workers.dev`, which is the default `site` in `astro.config.mjs`. If you attach a custom domain, set:
 
 ```
 PUBLIC_SITE_URL=https://that-live-url

@@ -1,0 +1,31 @@
+---
+import { baseMetricKeys, temporalMetricKeys, decodeVector } from '../data/advisories';
+
+interface Props {
+  vector: string;
+  temporal?: boolean;
+}
+
+const { vector, temporal = false } = Astro.props;
+const decoded = decodeVector(vector);
+const keys = temporal ? temporalMetricKeys : baseMetricKeys;
+---
+
+<div class="vector" data-reveal>
+  {
+    keys.map((k, i) => {
+      const m = decoded[k];
+      if (!m) return null;
+      return (
+        <div class="metric" style={`--i:${i}; --w:${m.weight}`}>
+          <p class="m-name">{m.name}</p>
+          <p class="m-val">
+            <span>{m.value}</span>
+            <span class="m-code">{m.key}:{m.code}</span>
+          </p>
+          <span class="m-bar" aria-hidden="true" />
+        </div>
+      );
+    })
+  }
+</div>

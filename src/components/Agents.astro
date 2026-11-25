@@ -1,0 +1,53 @@
+---
+import { agentTracks } from '../data/agents';
+
+// Illustrative run timeline: checkpoints where the agent writes memory, out to 30 hours.
+const hours = 30;
+const checkpoints = [1.5, 4, 6.5, 9, 12, 14.5, 17, 19.5, 22, 24.5, 27];
+const ticks = [0, 6, 12, 18, 24, 30];
+---
+
+<section id="agents" class="section wrap scroll-mt-24" aria-labelledby="agents-heading">
+  <div class="section-head">
+    <p class="kicker">AI agentic engineering</p>
+    <h2 id="agents-heading" class="h-section">Agents that remember, use tools well, and keep going</h2>
+    <p class="lede">
+      Alongside security work, I build and research autonomous AI agents. The goal is an agent you can hand a large task and leave alone for more than a day, and come back to finished, explainable work.
+    </p>
+  </div>
+
+  <div class="panel grid overflow-hidden sm:grid-cols-2">
+    {
+      agentTracks.map((t, i) => (
+        <article
+          class:list={[
+            'p-6 sm:p-8',
+            i > 0 && 'border-line max-sm:border-t',
+            i % 2 === 1 && 'sm:border-l',
+            i >= 2 && 'sm:border-t',
+          ]}
+        >
+          <h3 class="text-lg font-[680] tracking-tight [font-stretch:105%]">{t.title}</h3>
+          <p class="mt-2.5 text-[0.96rem] leading-relaxed text-fg/75">{t.body}</p>
+        </article>
+      ))
+    }
+  </div>
+
+  <figure class="panel mt-4 px-6 py-6 sm:px-8" data-reveal>
+    <figcaption class="flex flex-wrap items-baseline justify-between gap-2">
+      <span class="font-semibold">Design target for one unattended run</span>
+      <span class="text-sm text-mute">Each mark is a memory checkpoint the next session can resume from</span>
+    </figcaption>
+    <div class="run mt-10" role="img" aria-label="Timeline of a single agent run continuing past the 24 hour mark, with memory checkpoints every few hours">
+      <div class="run-track">
+        <span class="run-fill" aria-hidden="true"></span>
+        {checkpoints.map((h, i) => <span class="run-dot" style={`left:${(h / hours) * 100}%; --i:${i}`} aria-hidden="true" />)}
+        <span class="run-mark" style={`left:${(24 / hours) * 100}%`} aria-hidden="true"><span>24h</span></span>
+      </div>
+      <div class="run-axis" aria-hidden="true">
+        {ticks.map((t) => <span style={`left:${(t / hours) * 100}%`}>{t}h</span>)}
+      </div>
+    </div>
+  </figure>
+</section>

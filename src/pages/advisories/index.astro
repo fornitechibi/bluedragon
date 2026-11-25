@@ -1,0 +1,38 @@
+---
+import Base from '../../layouts/Base.astro';
+import Nav from '../../components/Nav.astro';
+import Footer from '../../components/Footer.astro';
+import AdvisoryCard from '../../components/AdvisoryCard.astro';
+import { advisories } from '../../data/advisories';
+import { profile } from '../../data/profile';
+
+const products = new Set(advisories.flatMap((a) => a.affected.map((p) => `${p.product}|${p.platform ?? ''}`))).size;
+---
+
+<Base
+  title={`Credited CVEs | ${profile.handle}`}
+  description={`Vendor advisories crediting ${profile.name}: ${advisories.map((a) => `${a.id} (${a.title})`).join('; ')}.`}
+>
+  <Nav />
+  <main id="main" class="wrap pb-24 pt-14 sm:pt-20">
+    <div class="section-head">
+      <p class="kicker">Vendor advisories</p>
+      <h1 class="display text-[clamp(2.6rem,7vw,5rem)]">Credited CVEs</h1>
+      <p class="lede">
+        Advisories where a vendor named {profile.name} as a finder. Fields are copied from the vendor's own record, and each card links to it.
+      </p>
+    </div>
+
+    <dl class="report-meta mb-10 grid-cols-2 sm:grid-cols-4">
+      <div><dt>CVEs</dt><dd class="text-2xl">{advisories.length}</dd></div>
+      <div><dt>Vendor</dt><dd class="text-2xl">Microsoft</dd></div>
+      <div><dt>Highest CVSS</dt><dd class="text-2xl">{Math.max(...advisories.map((a) => a.cvss.base)).toFixed(1)}</dd></div>
+      <div><dt>Product builds fixed</dt><dd class="text-2xl">{products}</dd></div>
+    </dl>
+
+    <div class="grid gap-6">
+      {advisories.map((a) => <AdvisoryCard advisory={a} headingLevel="h2" />)}
+    </div>
+  </main>
+  <Footer />
+</Base>

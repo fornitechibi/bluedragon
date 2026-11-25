@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import FindingCard from './FindingCard.astro';
-import { severityRank } from '../data/findings';
+import { severityRank, seriesMeta, type SeriesId } from '../data/findings';
 
 const all = await getCollection('findings');
 const featured = [...all]
@@ -10,34 +10,38 @@ const featured = [...all]
     if (bySev !== 0) return bySev;
     return b.data.date.valueOf() - a.data.date.valueOf();
   })
-  .slice(0, 3);
+  .slice(0, 5);
+const targets = new Set(all.map((e) => e.data.product)).size;
 ---
 
-<section id="findings" class="mx-auto max-w-6xl px-4 py-12 sm:px-6" aria-label="Public findings">
-  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-    <div class="max-w-2xl">
-      <p class="section-kicker">Public writeups</p>
-      <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Findings</h2>
-      <p class="mt-3 text-[0.95rem] leading-relaxed text-mute">
-        Long-form reports from OSS hunts. Each writeup is a technical note with diagrams, attack path, impact, and a fix. Selected audit writeups follow the same format as they are cleared to publish.
+<section id="findings" class="section wrap scroll-mt-24" aria-labelledby="findings-heading">
+  <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+    <div class="section-head !mb-0">
+      <p class="kicker">Public writeups</p>
+      <h2 id="findings-heading" class="h-section">Findings, written up in full</h2>
+      <p class="lede">
+        {all.length} reports across {targets} open-source targets. Each one walks the bug, the code path, a diagram of the failure, the impact, and the fix.
       </p>
     </div>
-    <a class="neo-btn neo-btn-ghost w-fit shrink-0" href="/findings">All reports</a>
+    <a class="btn btn-ghost w-fit shrink-0" href="/findings">All {all.length} reports</a>
   </div>
 
-  <div class="mt-8 grid gap-4 lg:grid-cols-3">
+  <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
     {
-      featured.map((entry) => (
-        <FindingCard
-          id={entry.id}
-          title={entry.data.title}
-          lede={entry.data.lede}
-          severity={entry.data.severity}
-          series={entry.data.series}
-          product={entry.data.product}
-          reach={entry.data.reach}
-          component={entry.data.component}
-        />
+      featured.map((entry, i) => (
+        <div class:list={[i === 0 && 'lg:col-span-2']}>
+          <FindingCard
+            id={entry.id}
+            title={entry.data.title}
+            lede={entry.data.lede}
+            severity={entry.data.severity}
+            series={entry.data.series}
+            product={entry.data.product}
+            reach={entry.data.reach}
+            component={entry.data.component}
+            logo={seriesMeta[entry.data.series as SeriesId]?.logo}
+          />
+        </div>
       ))
     }
   </div>

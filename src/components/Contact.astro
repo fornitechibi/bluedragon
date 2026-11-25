@@ -2,44 +2,44 @@
 import { profile } from '../data/profile';
 import Footer from './Footer.astro';
 
-const chips = [
+const links = [
   { label: 'X', href: profile.links.x },
   { label: 'GitHub', href: profile.links.github },
   { label: 'Sherlock', href: profile.links.sherlock },
   { label: 'Immunefi', href: profile.links.immunefi },
-  { label: 'Reports', href: profile.links.reports },
+  { label: 'Audit reports', href: profile.links.reports },
 ];
 ---
 
-<section id="contact" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-  <p class="section-kicker">Contact</p>
-  <h2 class="mt-2 text-3xl font-semibold tracking-tight sm:text-5xl">
-    Audits, triage, and AI systems
-  </h2>
-  <p class="mt-4 max-w-xl text-lg text-cream/85">
-    Independent. Remote. I take private security reviews, contest work, and production AI harness / agentic-system builds.
-  </p>
+<section id="contact" class="section wrap scroll-mt-24" aria-labelledby="contact-heading">
+  <div class="panel overflow-hidden">
+    <div class="grid gap-10 p-6 sm:p-10 lg:grid-cols-12">
+      <div class="min-w-0 lg:col-span-7">
+        <p class="kicker">Contact</p>
+        <h2 id="contact-heading" class="h-section mt-4">Send me the code you are worried about</h2>
+        <p class="lede mt-4">
+          I take private security reviews and contest work, and I build AI agents: persistent memory, reliable tooling, and long-running autonomous systems. Independent and fully remote.
+        </p>
+        <a class="email-display mt-8 inline-block" href={`mailto:${profile.email}`}>{profile.email}</a>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <a class="btn btn-primary" href={`mailto:${profile.email}`}>Write an email</a>
+          <button class="btn btn-ghost" type="button" data-copy={profile.email}>Copy address</button>
+        </div>
+        <ul class="mt-8 flex flex-wrap gap-2">
+          {links.map((l) => <li><a class="chip hover:border-frost/50 hover:text-fg" href={l.href} rel="noopener">{l.label}</a></li>)}
+        </ul>
+      </div>
 
-  <div class="neo mt-8 p-5 sm:p-8">
-    <p class="text-xs font-medium text-cyan">Email</p>
-    <a class="email-display mt-2 block text-cream no-underline hover:text-cyan" href={`mailto:${profile.email}`}>
-      {profile.email}
-    </a>
-    <div class="mt-6 flex flex-wrap gap-3">
-      <a class="neo-btn" href={`mailto:${profile.email}`}>Write</a>
-      <button class="neo-btn neo-btn-ghost" type="button" data-copy={profile.email}>Copy email</button>
+      <div class="min-w-0 lg:col-span-5">
+        <div class="pit h-full min-h-[15rem]" data-pit>
+          <canvas aria-hidden="true"></canvas>
+          <p class="pit-hint" data-pit-hint>Click to drop bytes. Hold to pour.</p>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="mt-6 flex flex-wrap gap-3">
-    {
-      chips.map((chip) => (
-        <a class="neo-btn neo-btn-ghost" href={chip.href}>
-          {chip.label}
-        </a>
-      ))
-    }
   </div>
 </section>
 
 <Footer />
+
+<script src="../scripts/bytepit.ts"></script>

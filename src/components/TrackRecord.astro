@@ -1,0 +1,74 @@
+---
+import { contests, platforms, profile } from '../data/profile';
+
+const sorted = contests; // already newest first in profile.ts
+const counts = Object.fromEntries(platforms.map((p) => [p, p === 'All' ? contests.length : contests.filter((c) => c.platform === p).length]));
+const totals = contests.reduce((acc, c) => ({ h: acc.h + c.high, m: acc.m + c.medium }), { h: 0, m: 0 });
+const top10 = contests.filter((c) => c.rank <= 10).length;
+---
+
+<section id="record" class="section wrap scroll-mt-24" aria-labelledby="record-heading">
+  <div class="section-head">
+    <p class="kicker">Contest record</p>
+    <h2 id="record-heading" class="h-section">{contests.length} audit contests, {top10} finished in the top 10</h2>
+    <p class="lede">
+      {totals.h} High and {totals.m} Medium findings accepted by judges on Sherlock, Code4rena, Cantina, CodeHawks, and Immunefi. Many titles stay private under platform rules.
+    </p>
+  </div>
+
+  <div class="filters" role="group" aria-label="Filter contests by platform" data-filters>
+    <span class="pill-bg" data-pill aria-hidden="true"></span>
+    {
+      platforms.map((p, i) => (
+        <button type="button" data-filter={p} aria-pressed={i === 0 ? 'true' : 'false'}>
+          {p}
+          <span class="ml-1 opacity-60 tabular-nums">{counts[p]}</span>
+        </button>
+      ))
+    }
+  </div>
+
+  <div class="panel mt-6 overflow-hidden">
+    <div class="contest !py-3 text-xs text-mute max-sm:hidden" aria-hidden="true">
+      <span>Rank</span>
+      <span>Contest</span>
+      <span class="text-right">Findings</span>
+    </div>
+    <ol data-contests>
+      {
+        sorted.map((c) => {
+          const named = c.notables.find((n) => n.title && n.title !== 'Finding held by platform');
+          return (
+            <li class="contest" data-platform={c.platform}>
+              <span class:list={['rank', c.rank <= 10 && 'top']}>#{c.rank}</span>
+              <div class="min-w-0">
+                <a class="font-semibold hover:text-frost" href={c.url} rel="noopener">
+                  {c.name}
+                </a>
+                <p class="mt-0.5 truncate text-sm text-mute">
+                  {c.platform}, {c.dateLabel}
+                  {named && <span class="max-sm:hidden">. {named.title}</span>}
+                </p>
+              </div>
+              <div class="flex flex-col items-end gap-1.5">
+                <span class="dots" aria-label={`${c.high} high, ${c.medium} medium, ${c.low} low`}>
+                  {Array.from({ length: Math.min(c.high, 6) }).map(() => <i style="--c: var(--color-high)" />)}
+                  {Array.from({ length: Math.min(c.medium, 6) }).map(() => <i style="--c: var(--color-med)" />)}
+                  {Array.from({ length: Math.min(c.low, 4) }).map(() => <i style="--c: var(--color-low)" />)}
+                </span>
+                {c.reportUrl && (
+                  <a class="text-xs text-frost hover:underline" href={c.reportUrl} rel="noopener">
+                    Report
+                  </a>
+                )}
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+  </div>
+  <p class="mt-4 text-sm text-mute">
+    Full history on <a class="link" href={profile.links.sherlock} rel="noopener">Sherlock</a>, <a class="link" href={profile.links.immunefi} rel="noopener">Immunefi</a>, and in the <a class="link" href={profile.links.reports} rel="noopener">audit reports repo</a>.
+  </p>
+</section>
